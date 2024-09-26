@@ -2,7 +2,6 @@ import inspect
 import requests
 import os
 import re
-import subprocess
 
 
 def llama(prompt):
@@ -26,8 +25,7 @@ def llama(prompt):
     choices = resp_body.get("choices", None)
     if choices is None:
         raise ValueError(resp_body)
-    response = choices[0]["message"]["content"]
-    return response
+    return choices[0]["message"]["content"]
 
 
 def auto_test(req=None, overwrite=False):
@@ -37,13 +35,11 @@ def auto_test(req=None, overwrite=False):
         if not os.path.exists(test_file_name) or overwrite:
             func_src = inspect.getsource(func)
             requirement = " " if req is None else f" The test case you create must meet the following requirements:\n\n{req}\n\n"
-            prompt = f"Perform unit test of the following function by creating testcases.{requirement}Please import the function from `{func_file}`. Please only output runnable code without other content. DO NOT contain any non-ASCII characters. Ensure a correct python syntax. DO NOT contain \".\" in function names. Here's the code of the function to be tested:\n\n```python\n{func_src}\n```"
+            prompt = f"Perform unit test of the following function by creating testcases.{requirement}Please import the function from `{func_file}`. Please only output runnable code without other content. DO NOT contain any non-ASCII characters. Ensure a correct python syntax. DO NOT contain \".\" in function names. Ensure to import all packages you need. Here's the code of the function to be tested:\n\n```python\n{func_src}\n```"
             test_code = llama(prompt)
             test_code = re.findall(r'```(?:\w*\n)?(.*?)```', test_code, re.DOTALL | re.MULTILINE)
             test_code = "\n".join(test_code)
             with open(test_file_name, "w") as f:
                 f.write(test_code)
         return func
-    if callable(req):
-        return wrapper(req)
-    return wrapper
+    return wrapper(req) if callable(req) else wrapper

@@ -4,6 +4,8 @@ This repo uses the Meta-Llama-3-8B-Instruct language model to automatically crea
 
 **NOTE: The test cases created by the language model may not be appropriate or executable, so manual inspection and revision are necessary.**
 
+![](res/demo.gif)
+
 ## Usage
 
 1. Import `auto_test`.

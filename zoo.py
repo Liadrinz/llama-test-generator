@@ -1,7 +1,7 @@
 from auto_test import auto_test
 
 
-@auto_test(req="better to mention monkey and bear", overwrite=True)
+@auto_test(req="test boarder values")
 def feed(animal: str, age: int):
     if age < 2:
         return "milk"

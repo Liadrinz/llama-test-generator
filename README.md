@@ -8,6 +8,11 @@ This repo uses the Meta-Llama-3-8B-Instruct language model to automatically crea
 
 ## Usage
 
+0. Ensure you have access to [deepinfra](https://api.deepinfra.com/).
+    ```shell
+    ping api.deepinfra.com
+    ```
+
 1. Import `auto_test`.
     ```python
     from auto_test import auto_test
